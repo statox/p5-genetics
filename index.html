@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5-genetics</title>
+
+    <!-- jQuery required by bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+
+    <!-- p5.js -->
+    <script src="p5/p5.min.js"></script>
+    <script src="p5/addons/p5.dom.min.js"></script>
+    <script src="p5/addons/p5.sound.min.js"></script>
+
+    <!-- App -->
+    <script src="app/sketch.js"></script>
+    <script src="app/Robot.js"></script>
+    <script src="app/Genes.js"></script>
+    <script src="app/Crowd.js"></script>
+    <script src="app/Chart.js"></script>
+    <script src="app/Interface.js"></script>
+  </head>
+
+  <body>
+      <div class="container">
+          <div class="jumbotron" style="text-align:center">
+              <h1>Genetic Algorithm Experience</h1>
+              <p>Let's reach the target!</p>
+          </div>
+
+          <div class="row grid">
+              <div class="row input-group">
+                  <p>Lifespan:</p>
+                  <input class="form-control" id="inputLifespan" type="number"/>
+                  <button class="btn btn-default" type="button" onclick="setLifespan()">Set</button>
+              </div>
+              <div class="row input-group">
+                  <p>Mutation rate:</p>
+                  <input class="form-control" id="inputMutationRate" type="number"/>
+                  <button class="btn btn-default" type="button" onclick="setMutationRate()">Set</button>
+                  <span class="hidden" style="color:red" id="errorMutationRate">The mutation rate must be between 0 and 100%</span>
+              </div>
+              <div class="row input-group">
+                  <p>History size:</p>
+                  <input class="form-control" id="inputHistorySize" type="number"/>
+                  <button class="btn btn-default" type="button" onclick="setHistorySize()">Set</button>
+                  <span class="hidden" style="color:red" id="errorHistorySize">The history size must be greater than 0</span>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-6" id="canvasDiv"></div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-6">
+                  <canvas id="distancesChart"></canvas>
+              </div>
+              <div class="col-md-6">
+                  <canvas id="crashChart"></canvas>
+              </div>
+          </div>
+      </div>
+  </body>
+</html>
