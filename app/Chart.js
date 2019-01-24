@@ -39,6 +39,22 @@ function DrawingChart() {
                         data: this.min
                     }
                 ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Distance to the target'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Generations'
+                        }
+                    }]
+                }
             }
         })
     }
@@ -54,16 +70,32 @@ function DrawingChart() {
                 labels: this.labels,
                 datasets: [
                     {
-                        borderColor: "#3e95cd",
+                        borderColor: "#ff0000",
                         label: "Crashed",
                         data: this.crashed
                     },
                     {
-                        borderColor: "#8e5ea2",
-                        label: "Found the target",
+                        borderColor: "#33cc33",
+                        label: "Reached the target",
                         data: this.foundTarget
                     }
                 ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Number of robots'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Generations'
+                        }
+                    }]
+                }
             }
         })
     }
