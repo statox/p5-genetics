@@ -3,7 +3,7 @@ function Crowd(size) {
     this.matingPool = [];
     this.size = size;
     for (var i=0; i<size; i++) {
-        this.robots.push(new Robot(W/2, L/2, 25, LIFESPAN));
+        this.robots.push(new Robot(W/2, L/2, ROBOT_SIZE, LIFESPAN));
     }
 }
 

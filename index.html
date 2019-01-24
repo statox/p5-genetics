@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
 
@@ -28,45 +31,173 @@
     <script src="app/Crowd.js"></script>
     <script src="app/Chart.js"></script>
     <script src="app/Interface.js"></script>
+
+    <!-- Github fork me ribbon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.min.css" />
+
+    <!-- Custom css -->
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
 
   <body>
+      <a class="github-fork-ribbon" href="https://github.com/statox/p5-genetics" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+
       <div class="container">
+          <!-- Jumbotron header -->
           <div class="jumbotron" style="text-align:center">
               <h1>Genetic Algorithm Experience</h1>
               <p>Let's reach the target!</p>
           </div>
 
-          <div class="row grid">
-              <div class="row input-group">
-                  <p>Lifespan:</p>
-                  <input class="form-control" id="inputLifespan" type="number"/>
-                  <button class="btn btn-default" type="button" onclick="setLifespan()">Set</button>
-              </div>
-              <div class="row input-group">
-                  <p>Mutation rate:</p>
-                  <input class="form-control" id="inputMutationRate" type="number"/>
-                  <button class="btn btn-default" type="button" onclick="setMutationRate()">Set</button>
-                  <span class="hidden" style="color:red" id="errorMutationRate">The mutation rate must be between 0 and 100%</span>
-              </div>
-              <div class="row input-group">
-                  <p>History size:</p>
-                  <input class="form-control" id="inputHistorySize" type="number"/>
-                  <button class="btn btn-default" type="button" onclick="setHistorySize()">Set</button>
-                  <span class="hidden" style="color:red" id="errorHistorySize">The history size must be greater than 0</span>
+          <!-- Presentation -->
+          <div class="row">
+              <h1>What is this?</h1>
+              <i id="btn-collapse-intro" class="pull-left fa fa-chevron-right" data-toggle="collapse" data-target="#intro-content"></i>
+              <hr/>
+              <div id="intro-content" class="collapse in">
+                  <p>
+                  This page is an experimentation built with <a href="https://p5js.org">p5.js</a> allowing the user to manipulate the parameters of a simulation running a <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithm</a>.
+                  <br/>
+                  <br/>
+                  In the simulation the robots have the goal to reach the target. First the population of the robots is initialized with a random selection of moves (their "genes").
+                  At the end of each generation each robot reports its distance to the target, and the robots with a distance below the average one are selected to be used to create the next generation.
+                  <br/>
+                  <br/>
+                  In the new generation each robot uses a crossover of the genes of the previously selected robots.
+                  In addition the genes of each robots "mutate", which means that some of their genes are randomly replaced by new ones.
+                  This operation follows the "mutation rate" to know how much randomness should be injected in each generation.
+                  <br/>
+                  <br/>
+                  In the <a href="#settings">next section</a> you will find the different parameters you can manipulate and their description.
+                  You will see the results in the section <a href="#simulation">Simulation</a>.
+                  <br/>
+                  <br/>
+                  The <a href="#charts">Charts</a> section shows a history of the generations you run previously and their efficiency.
+                  </p>
               </div>
           </div>
 
+          <!-- Settings -->
           <div class="row">
-              <div class="col-md-6" id="canvasDiv"></div>
+              <h1 id="settings">Settings</h1>
+              <i id="btn-settings-intro" class="pull-left fa fa-chevron-right" data-toggle="collapse" data-target="#settings-content"></i>
+              <hr/>
+              <table class="table table-bordered collapse in" id="settings-content">
+                  <tbody>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>Lifespan</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>The number of moves a robot in a generation can do before the generation ends. If the robot crashes before it could do all of its moves the other will continue.</span>
+                              <span><i class="reset-simulation-warning"><br/>*Modifying this setting resets the simulation</i></span>
+                          </td>
+                          <td class="col-sm-3">
+                              <input id="inputLifespan" type="number"/>
+                              <button class="btn btn-default" type="button" onclick="setLifespan()">Reset</button>
+                          </td>
+                      </tr>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>Population size</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>The number of robots in each generation</span>
+                              <span><i class="reset-simulation-warning"><br/>*Modifying this setting resets the simulation</i></span>
+                          </td>
+                          <td class="col-sm-3">
+                              <input id="inputPopulationSize" type="number"/>
+                              <button class="btn btn-default" type="button" onclick="setPopulationSize()">Reset</button>
+                          </td>
+                      </tr>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>Robots size</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>The size of the robots</span>
+                              <span><i class="reset-simulation-warning"><br/>*Modifying this setting resets the simulation</i></span>
+                              <span class="hidden" style="color:red" id="errorRobotSize"><br/>The robot size must be greater than 0</span>
+                          </td>
+                          <td class="col-sm-3">
+                              <input id="inputRobotSize" type="number"/>
+                              <button class="btn btn-default" type="button" onclick="setRobotSize()">Reset</button>
+                          </td>
+                      </tr>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>Robots in objective</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>The number of robots which have to reach the target before we consider the objective reached and move the target elsewhere.</span>
+                          </td>
+                          <td class="col-sm-3">
+                              <input id="inputRobotsObjective" type="number"/>
+                              <button class="btn btn-default" type="button" onclick="setRobotsInObjective()">Set</button>
+                          </td>
+                      </tr>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>Mutation rate</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>At the end of each generation the robots gets new genes from their ancestors and these genes then mutate. The mutation rate describe which percentage of the genes will mutate.</span>
+                              <span class="hidden" style="color:red" id="errorMutationRate"><br/>The mutation rate must be between 0 and 100%</span>
+                          </td>
+                          <td class="col-sm-3">
+                              <input id="inputMutationRate" type="number"/>
+                              <button class="btn btn-default" type="button" onclick="setMutationRate()">Set</button>
+                          </td>
+                      </tr>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>History size</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>The number of generations to keep in the charts</span>
+                              <span class="hidden" style="color:red" id="errorHistorySize"><br/>The history size must be greater than 0</span>
+                          </td>
+                          <td class="col-sm-3">
+                              <input id="inputHistorySize" type="number"/>
+                              <button class="btn btn-default" type="button" onclick="setHistorySize()">Set</button>
+                          </td>
+                      </tr>
+                      <tr class="row">
+                          <td class="col-sm-2">
+                              <p>Position of the target</p>
+                          </td>
+                          <td class="col-sm-7">
+                              <span>At any time you can click anywhere on the simulation to move the target (the black dot).</span>
+                          </td>
+                          <td class="col-sm-3">
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
 
+          <!-- The simulation -->
           <div class="row">
-              <div class="col-md-6">
-                  <canvas id="distancesChart"></canvas>
+              <h1 id="simulation">Simulation</h1>
+              <i id="btn-simulation-intro" class="pull-left fa fa-chevron-right" data-toggle="collapse" data-target="#simulation-content"></i>
+              <hr/>
+              <div id="simulation-content" class="collapse in">
+                  <div class="col-md-6" id="canvasDiv"></div>
               </div>
-              <div class="col-md-6">
-                  <canvas id="crashChart"></canvas>
+          </div>
+
+          <!-- Charts -->
+          <div class="row">
+              <h1 id="charts">Charts</h1>
+              <i id="btn-charts-intro" class="pull-left fa fa-chevron-right" data-toggle="collapse" data-target="#charts-content"></i>
+              <hr/>
+              <div id="charts-content" class="collapse in">
+                  <div class="col-md-6">
+                      <canvas id="distancesChart"></canvas>
+                  </div>
+                  <div class="col-md-6">
+                      <canvas id="crashChart"></canvas>
+                  </div>
               </div>
           </div>
       </div>

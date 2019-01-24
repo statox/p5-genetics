@@ -3,7 +3,7 @@ function Robot(x, y, r, lifespan) {
     this.initY = y;
     this.pos = new p5.Vector();
     this.lifespan = lifespan;
-    this.r = r;
+    this.r = ROBOT_SIZE;
     this.genes = new Genes(this.lifespan);
 
     this.reset();

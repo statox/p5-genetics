@@ -1,12 +1,13 @@
 var W=700;
 var L=400;
 var CROWD_SIZE = 10;
+var ROBOTS_IN_OBJECTIVE = CROWD_SIZE / 2;
 var LIFESPAN = 300;
 var GENERATION = 1;
 var MUTATION_RATE = 5;
 var HISTORY_SIZE = 100;
+var ROBOT_SIZE = 25;
 
-var robot;
 var AGE;
 var obstacles;
 var crowd;
@@ -14,17 +15,28 @@ var crowd;
 var TARGET;
 var charts;
 
-function setup() {
-    initializeInterface();
-    var myCanvas = createCanvas(W, L);
-    myCanvas.parent("canvasDiv");
-
+function resetSimulation() {
     crowd = new Crowd(CROWD_SIZE);
     TARGET = new p5.Vector();
     setRandomTarget();
 
     AGE = 0;
+    GENERATION = 1;
     charts = new DrawingChart();
+    charts.drawChart();
+}
+
+function setup() {
+    // Put the values of the settings in the settings html table
+    initializeInterface();
+
+    // Create the canvas and put it in its div
+    var myCanvas = createCanvas(W, L);
+    myCanvas.parent("canvasDiv");
+
+    rectMode(CENTER);
+
+    resetSimulation();
 }
 
 function draw() {
@@ -33,21 +45,26 @@ function draw() {
     drawInfo();
     AGE ++;
 
+    // Move and draw every robot in the crowd
     for (robot of crowd.robots) {
         robot.move();
         robot.show();
     }
 
+    // If we reached the lifespan of the generation
+    // Rate the performance of each robot, make them evolve
+    // update the charts and if we reached our objective change the target
     if (AGE === LIFESPAN) {
         var generationValues = crowd.evaluate();
         crowd.evolve();
+
         charts.addGenerationValues(GENERATION, generationValues);
         charts.drawChart();
 
         AGE = 0;
         GENERATION++;
 
-        if (generationValues.foundTarget >= crowd.size /2) {
+        if (generationValues.foundTarget >= ROBOTS_IN_OBJECTIVE) {
             setRandomTarget();
         }
     }
